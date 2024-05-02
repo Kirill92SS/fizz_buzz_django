@@ -2,6 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from app_v1.models import FizzBuzz, Fizz, Buzz
 from django.core.exceptions import ObjectDoesNotExist
+from subprocess import run
 
 
 def check_fizz_buzz(model, number, lst):
@@ -28,4 +29,5 @@ def make_fizz_buzz(request: HttpRequest, number: int):
             check_fizz_buzz(Buzz, _, fizzbuzz_list)
         else:
             fizzbuzz_list.append(_)
+    fizzbuzz_list.append(f'Hostname: {run(["hostname"], capture_output=True, text=True, check=True).stdout}')
     return render(request, 'app_v1/fizz_buzz.html', {'fizzbuzz_list': fizzbuzz_list, 'number': number})
